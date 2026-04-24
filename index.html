@@ -3,42 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goal Tracker - Home</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Money Goal Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="home-body">
+    <div class="aurora-bg" aria-hidden="true"></div>
 
-    <div class="hero-container">
-        
-        <nav class="top-nav">
-            <div class="auth-triggers">
-                <button id="loginBtn" class="nav-btn"><i class="fas fa-user"></i> Login</button>
-            </div>
-        </nav>
-
-        <div class="main-content">
-            <h1 class="main-title">Welcome Buddy</h1> <p class="motivation-quote">"Dream Big, Save Smart, Achieve Your Goals!"</p>
-            
-            <div class="action-tab">
-                <button class="explore-btn" onclick="window.location.href='items.html'">
-                    VIEW MY GOAL ITEMS <i class="fas fa-arrow-right"></i>
+    <div class="home-shell">
+        <header class="top-nav">
+            <h2 class="brand"><i class="fa-solid fa-bullseye"></i> Money Goal Tracker</h2>
+            <div class="top-actions">
+                <span id="welcomeUser" class="welcome-user"></span>
+                <button id="logoutBtn" class="ghost-btn hidden" type="button">Logout</button>
+                <button id="accountBtn" class="main-btn" type="button">
+                    <i class="fas fa-user"></i> User Account
                 </button>
             </div>
-        </div>
+        </header>
 
-        <div id="authModal" class="modal">
-            <div class="modal-content glass">
-                <span class="close-btn">&times;</span>
-                <div id="loginForm">
-                    <h2>Welcome Back</h2>
-                    <input type="text" placeholder="Username">
-                    <input type="password" placeholder="Password">
-                    <button class="submit-btn">Login</button>
+        <main class="hero-container">
+            <div class="main-content">
+                <p class="mini-title">Plan your goals with clarity</p>
+                <h1 class="main-title">Track what you have, then buy what matters.</h1>
+                <p class="motivation-quote">"Small daily savings become life-changing wins."</p>
+
+                <div class="action-tab">
+                    <a class="explore-btn" href="items.html">
+                        Open Item Page <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
-        </div>
+        </main>
+    </div>
 
+    <div id="authModal" class="modal" aria-hidden="true">
+        <div class="modal-content auth-box">
+            <button class="close-btn" type="button" data-close="authModal">&times;</button>
+
+            <div class="auth-switch">
+                <button id="loginTabBtn" class="tab-btn active" type="button">Login</button>
+                <button id="signupTabBtn" class="tab-btn" type="button">Sign Up</button>
+            </div>
+
+            <form id="loginForm" class="auth-form active">
+                <h3>Welcome Back</h3>
+                <label>Username</label>
+                <input id="loginUsername" type="text" required>
+                <label>Password</label>
+                <input id="loginPassword" type="password" required>
+                <button class="submit-btn" type="submit">Login</button>
+            </form>
+
+            <form id="signupForm" class="auth-form">
+                <h3>Create New Account</h3>
+                <label>Full Name</label>
+                <input id="signupName" type="text" required>
+                <label>Date of Birth</label>
+                <input id="signupDob" type="date" required>
+                <label>Username</label>
+                <input id="signupUsername" type="text" required>
+                <label>Password</label>
+                <input id="signupPassword" type="password" required>
+                <label>Confirm Password</label>
+                <input id="signupPasswordConfirm" type="password" required>
+                <label class="show-pass-row">
+                    <input id="showPasswordToggle" type="checkbox"> Show passwords
+                </label>
+                <button class="submit-btn" type="submit">Sign Up</button>
+            </form>
+
+            <p id="authMessage" class="auth-message"></p>
+        </div>
     </div>
 
     <script src="script.js"></script>
