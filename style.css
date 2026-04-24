@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Background Image Setup */
+.hero-container {
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80'); /* මේක ඔයාගේ image එකට පස්සේ මාරු කරන්න පුළුවන් */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+/* Top Right Nav */
+.top-nav {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 20px;
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+}
+
+.nav-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* Main Content Styling */
+.main-content {
+    text-align: center;
+    animation: fadeInUp 1.5s ease;
+}
+
+.main-title {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.motivation-quote {
+    font-size: 1.2rem;
+    font-weight: 300;
+    opacity: 0.8;
+    margin-bottom: 40px;
+}
+
+/* The Main Tab (Button) */
+.explore-btn {
+    background: #1a1a1a; /* Dark button like reference */
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    transition: 0.4s;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.explore-btn:hover {
+    transform: scale(1.05);
+    background: #333;
+}
+
+/* Modal (Popup) Styling */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 100;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 40px;
+    border-radius: 20px;
+    width: 350px;
+    margin: 10% auto;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Items Page Global Styles --- */
+.items-body {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* --- Balance Box (Fixing to the very top left) --- */
+.balance-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999; /* හැමදේටම වඩා උඩින් තැබීමට */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    width: 250px;
+}
+
+.balance-container label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 3px;
+}
+
+.balance-container input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    font-size: 1.6rem;
+    color: #ffd700; /* Gold color */
+    font-weight: 700;
+    width: 180px;
+    outline: none;
+    padding: 5px 0;
+    transition: all 0.3s ease;
+}
+
+.balance-container input:focus {
+    border-bottom: 2px solid #ffd700;
+    width: 220px;
+}
+
+/* Chrome, Safari, Edge arrows ඉවත් කිරීම */
+.balance-container input::-webkit-outer-spin-button,
+.balance-container input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* --- Content Wrapper (ඉතා වැදගත්: Cards ටික පහළට තල්ලු කිරීමට) --- */
+.content-wrapper {
+    padding-top: 150px; /* Balance box එකට ඉඩ තැබීමට ඉහළින් ලොකු padding එකක් */
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+/* --- Layout Wrapper --- */
+.items-header {
+    display: flex;
+    justify-content: flex-end; /* Add button එක දකුණට තල්ලු කරයි */
+    margin-top: 80px; /* Balance box එකට ඉඩ තැබීමට */
+    margin-bottom: 40px;
+}
+
+/* --- Items Grid --- */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    /* Grid එක balance box එකට යට නොවන බව තහවුරු කරන්න */
+    position: relative; 
+    z-index: 1;
+}
+
+.item-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.item-card:hover { 
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-details { padding: 20px; }
+
+/* --- Progress Bar --- */
+.progress-container {
+    background: rgba(255,255,255,0.15);
+    height: 12px;
+    border-radius: 10px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff8a00, #e52e71); /* Gradient color */
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.buy-status {
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: right;
+    display: block;
+}
+
+.can-buy { color: #00ff88; font-weight: bold; text-transform: uppercase; }

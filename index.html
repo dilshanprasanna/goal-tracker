@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Tracker - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="hero-container">
+        
+        <nav class="top-nav">
+            <div class="auth-triggers">
+                <button id="loginBtn" class="nav-btn"><i class="fas fa-user"></i> Login</button>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <h1 class="main-title">Welcome Buddy</h1> <p class="motivation-quote">"Dream Big, Save Smart, Achieve Your Goals!"</p>
+            
+            <div class="action-tab">
+                <button class="explore-btn" onclick="window.location.href='items.html'">
+                    VIEW MY GOAL ITEMS <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="authModal" class="modal">
+            <div class="modal-content glass">
+                <span class="close-btn">&times;</span>
+                <div id="loginForm">
+                    <h2>Welcome Back</h2>
+                    <input type="text" placeholder="Username">
+                    <input type="password" placeholder="Password">
+                    <button class="submit-btn">Login</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Goals - Item Page</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="items-body">
+    <div class="overlay"></div>
+
+    <div class="balance-container glass">
+        <label>My Balance (LKR)</label>
+        <input type="number" id="accountBalance" placeholder="0.00" oninput="updateAllCards()">
+    </div>
+
+    <div class="content-wrapper">
+        <header class="items-header">
+            <div></div> <button class="add-item-btn" onclick="openModal()">
+                <i class="fas fa-plus"></i> Add New Goal
+            </button>
+        </header>
+
+        <main class="items-grid" id="itemsGrid">
+            </main>
+    </div>
+    </body>
+    
+    <div id="itemModal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3>Add New Item</h3>
+            <input type="text" id="itemName" placeholder="Item Name (Compulsory)" required>
+            <input type="text" id="itemSubtitle" placeholder="Subtitle (Optional)">
+            <input type="number" id="itemPrice" placeholder="Price in LKR (Compulsory)" required>
+            <textarea id="itemDesc" placeholder="Description (Max 1000 words)" rows="4"></textarea>
+            
+            <label class="file-label">
+                <i class="fas fa-image"></i> Upload Main Image
+                <input type="file" id="itemImage" accept="image/*" hidden>
+            </label>
+            
+            <button class="save-btn" onclick="addNewItem()">Save Goal</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
