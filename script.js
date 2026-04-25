@@ -159,15 +159,23 @@ function initItemsPage() {
         return;
     }
 
+    let draggedItemId = null;
+    let blockCardClick = false;
+
     const itemsUserLabel = document.getElementById("itemsUserLabel");
     itemsUserLabel.textContent = `User: ${user.username}`;
 
+    const grid = document.getElementById("itemsGrid");
     const balanceInput = document.getElementById("accountBalance");
     const openAddItemBtn = document.getElementById("openAddItemBtn");
     const addItemForm = document.getElementById("addItemForm");
     const itemDetailForm = document.getElementById("itemDetailForm");
     const addExtraImageBtn = document.getElementById("addExtraImageBtn");
     const deleteItemBtn = document.getElementById("deleteItemBtn");
+
+    grid.addEventListener("dragover", (event) => {
+        event.preventDefault();
+    });
 
     balanceInput.value = String(getUserBalance(user.username));
     renderItems();
@@ -233,7 +241,6 @@ function initItemsPage() {
     }
 
     function renderItems() {
-        const grid = document.getElementById("itemsGrid");
         const items = getUserItems(user.username);
         const balance = getUserBalance(user.username);
 
@@ -251,7 +258,7 @@ function initItemsPage() {
                     : `${percentage.toFixed(1)}% collected`;
 
                 return `
-                    <article class="item-card" data-item-id="${item.id}">
+                    <article class="item-card" data-item-id="${item.id}" draggable="true">
                         <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" class="card-img">
                         <div class="card-details">
                             <h3 class="card-title">${escapeHtml(item.name)}</h3>
@@ -270,8 +277,75 @@ function initItemsPage() {
 
         const cards = grid.querySelectorAll(".item-card");
         cards.forEach((card) => {
-            card.addEventListener("click", () => openDetail(card.dataset.itemId));
+            card.addEventListener("click", () => {
+                if (blockCardClick) {
+                    return;
+                }
+                openDetail(card.dataset.itemId);
+            });
+
+            card.addEventListener("dragstart", (event) => {
+                draggedItemId = card.dataset.itemId;
+                blockCardClick = true;
+                card.classList.add("dragging");
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData("text/plain", draggedItemId);
+            });
+
+            card.addEventListener("dragover", (event) => {
+                event.preventDefault();
+                if (!draggedItemId || draggedItemId === card.dataset.itemId) {
+                    return;
+                }
+                card.classList.add("drop-target");
+                event.dataTransfer.dropEffect = "move";
+            });
+
+            card.addEventListener("dragleave", () => {
+                card.classList.remove("drop-target");
+            });
+
+            card.addEventListener("drop", (event) => {
+                event.preventDefault();
+                card.classList.remove("drop-target");
+                const targetItemId = card.dataset.itemId;
+                if (!draggedItemId || draggedItemId === targetItemId) {
+                    return;
+                }
+                reorderItems(draggedItemId, targetItemId);
+                draggedItemId = null;
+            });
+
+            card.addEventListener("dragend", () => {
+                card.classList.remove("dragging");
+                clearDropTargets();
+                draggedItemId = null;
+                setTimeout(() => {
+                    blockCardClick = false;
+                }, 0);
+            });
         });
+    }
+
+    function reorderItems(fromItemId, toItemId) {
+        const items = getUserItems(user.username);
+        const fromIndex = items.findIndex((item) => item.id === fromItemId);
+        const toIndex = items.findIndex((item) => item.id === toItemId);
+
+        if (fromIndex === -1 || toIndex === -1 || fromIndex === toIndex) {
+            return;
+        }
+
+        const [movedItem] = items.splice(fromIndex, 1);
+        const insertIndex = fromIndex < toIndex ? toIndex - 1 : toIndex;
+        items.splice(insertIndex, 0, movedItem);
+        saveUserItems(user.username, items);
+        renderItems();
+    }
+
+    function clearDropTargets() {
+        const targets = document.querySelectorAll(".item-card.drop-target");
+        targets.forEach((target) => target.classList.remove("drop-target"));
     }
 
     function openDetail(itemId) {

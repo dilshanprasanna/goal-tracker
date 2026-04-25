@@ -234,6 +234,16 @@ textarea:focus {
     margin: 1.1rem 0 1.5rem;
 }
 
+.reorder-hint {
+    color: #f7dca7;
+    font-size: 0.86rem;
+    margin-bottom: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    opacity: 0.95;
+}
+
 .items-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -545,4 +555,14 @@ textarea:focus {
     .extra-input-row {
         grid-template-columns: 1fr;
     }
+}
+
+.item-card.dragging {
+    opacity: 0.45;
+    transform: scale(0.98);
+}
+
+.item-card.drop-target {
+    border-color: #ffd37a;
+    box-shadow: 0 0 0 2px rgba(255, 211, 122, 0.28), var(--shadow);
 }
