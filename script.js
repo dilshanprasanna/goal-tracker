@@ -60,14 +60,14 @@ function initHomePage() {
         document.getElementById("signupPasswordConfirm").type = type;
     });
 
-    loginForm.addEventListener("submit", (event) => {
+    loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        handleLogin();
+        await handleLogin();
     });
 
-    signupForm.addEventListener("submit", (event) => {
+    signupForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        handleSignup();
+        await handleSignup();
     });
 
     function updateHomeUserState() {
@@ -94,15 +94,28 @@ function initHomePage() {
         setAuthMessage("");
     }
 
-    function handleLogin() {
+    async function handleLogin() {
         const username = document.getElementById("loginUsername").value.trim();
         const password = document.getElementById("loginPassword").value;
         const users = getUsers();
-        const found = users.find((user) => user.username === username && user.password === password);
+        let passwordHash;
+        try {
+            passwordHash = await hashPassword(password);
+        } catch {
+            setAuthMessage("Secure login is unavailable. Open the app through HTTPS or localhost.");
+            return;
+        }
+        const found = users.find((user) => user.username === username);
 
-        if (!found) {
+        if (!found || (found.passwordHash !== passwordHash && found.password !== password)) {
             setAuthMessage("Invalid username or password.");
             return;
+        }
+
+        if (!found.passwordHash) {
+            found.passwordHash = passwordHash;
+            delete found.password;
+            saveUsers(users);
         }
 
         setSessionUser(found.username);
@@ -114,7 +127,7 @@ function initHomePage() {
         }, 500);
     }
 
-    function handleSignup() {
+    async function handleSignup() {
         const name = document.getElementById("signupName").value.trim();
         const dob = document.getElementById("signupDob").value;
         const username = document.getElementById("signupUsername").value.trim();
@@ -137,7 +150,14 @@ function initHomePage() {
             return;
         }
 
-        users.push({ name, dob, username, password });
+        let passwordHash;
+        try {
+            passwordHash = await hashPassword(password);
+        } catch {
+            setAuthMessage("Secure sign up is unavailable. Open the app through HTTPS or localhost.");
+            return;
+        }
+        users.push({ name, dob, username, passwordHash });
         saveUsers(users);
         ensureUserDataDefaults(username);
         setSessionUser(username);
@@ -547,7 +567,7 @@ function saveUsers(users) {
 }
 
 function getSessionUser() {
-    const username = localStorage.getItem(STORAGE_KEYS.SESSION);
+    const username = sessionStorage.getItem(STORAGE_KEYS.SESSION);
     if (!username) {
         return null;
     }
@@ -556,11 +576,23 @@ function getSessionUser() {
 }
 
 function setSessionUser(username) {
-    localStorage.setItem(STORAGE_KEYS.SESSION, username);
+    sessionStorage.setItem(STORAGE_KEYS.SESSION, username);
 }
 
 function clearSessionUser() {
-    localStorage.removeItem(STORAGE_KEYS.SESSION);
+    sessionStorage.removeItem(STORAGE_KEYS.SESSION);
+}
+
+async function hashPassword(password) {
+    if (!window.crypto?.subtle) {
+        throw new Error("Secure password hashing is unavailable in this browser context.");
+    }
+
+    const data = new TextEncoder().encode(password);
+    const digest = await window.crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(digest))
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
 }
 
 function getUserItemsKey(username) {
